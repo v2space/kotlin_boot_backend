@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: kotlin_boot_backend
+  datasource:
+    url: jdbc:postgresql://host.docker.internal:5432/v2space
+    username: v2space
+    password: v2space1234
+    driver-class-name: org.postgresql.Driver
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss

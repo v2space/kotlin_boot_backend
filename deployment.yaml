@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: entelliship-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: entelliship
+  template:
+    metadata:
+      labels:
+        app: entelliship
+    spec:
+      containers:
+        - name: entelliship
+          image: moesamazzt/entelliship-backend:1.0.0
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: dockerhub-secret

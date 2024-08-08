@@ -1,0 +1,29 @@
+# Workflow 的名称
+name: Deploy Mine Server
+
+# 定义触发事件，push 推送到 main 分支或手动触发
+on:
+  # 当推送到 main 分支时触发工作流
+  push:
+    branches: [main]
+
+  # 允许从 Actions 标签页手动运行此工作流
+  workflow_dispatch:
+
+# 工作流由一个或多个作业组成，这些作业可以顺序或并行运行
+jobs:
+  deploy:
+    # 定义运行的环境，这里使用最新版的 Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      # 第一步：拉取最新提交的代码到虚拟机中
+      - name: Pull code
+        uses: actions/checkout@v4
+
+      # 第二步：通过 SSH 连接到远程服务器并测试
+      - name: Test
+        run: sshpass -p ${{secrets.REMOTE_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_IP}} "cd /root/workspace && touch test.log && echo "test success" >> test.log"
+
+      # 第三步：通过 SCP 将本地生成的打包文件上传到远程服务器的指定目录
+      #- name: Upload
+      #run: sshpass -p ${{secrets.REMOTE_PWD}} scp -r -o StrictHostKeyChecking=no ./dist/* root@${{secrets.REMOTE_IP}}:/data/co-school/nginx/html/
